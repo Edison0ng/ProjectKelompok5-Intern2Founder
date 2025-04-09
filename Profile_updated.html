@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TalentFlow Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      overscroll-behavior: contain;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafb;
+    }
+    
+    /* Sidebar Styles */
+    .sidebar {
+      transition: width 0.3s ease;
+      width: 70px;
+      overflow: hidden;
+    }
+    .sidebar:hover {
+      width: 250px;
+    }
+    .nav-item {
+      white-space: nowrap;
+    }
+    .nav-text {
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all 0.3s ease;
+    }
+    .sidebar:hover .nav-text {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .menu-tooltip {
+      position: absolute;
+      left: 70px;
+      background-color: #4b5563;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 100;
+    }
+    .sidebar:not(:hover) .nav-item:hover .menu-tooltip {
+      opacity: 1;
+    }
+    
+    /* Content Styles */
+    .content-wrapper {
+      transition: margin-left 0.3s ease;
+      margin-left: 70px;
+    }
+    .sidebar:hover ~ .content-wrapper {
+      margin-left: 250px;
+    }
+    
+    /* Card & Button Styles */
+    .card-hover {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    .btn-hover {
+      transition: all 0.2s ease;
+    }
+    .btn-hover:hover {
+      transform: translateY(-1px);
+    }
+    
+    /* Table Styles */
+    .table-row {
+      transition: background-color 0.2s ease;
+    }
+    .table-row:hover {
+      background-color: #f9fafb;
+    }
+    
+    /* Animation Styles */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    .fade-in-delay-1 {
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out 0.1s forwards;
+    }
+    .fade-in-delay-2 {
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out 0.2s forwards;
+    }
+    
+    /* Page Content Display */
+    .page-content {
+      display: none;
+    }
+    .page-content.active {
+      display: block;
+    }
+    
+    /* Back Button Styles */
+    .back-button {
+      position: fixed;
+      top: 20px;
+      left: 80px;
+      z-index: 5;
+      background-color: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: #4b5563;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      transition: all 0.2s ease;
+    }
+    .back-button:hover {
+      background-color: #f9fafb;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .back-button i {
+      margin-right: 6px;
+    }
+    
+    /* Adjust back button position when sidebar expands */
+    .sidebar:hover ~ .back-button {
+      left: 260px;
+    }
+
+    /* Drag and Drop Styling */
+.calendar-cell.drag-over {
+  background-color: #f3ebff;
+  border: 2px dashed #9061f9;
+}
+
+/* Better event styles */
+.event-draggable {
+  user-select: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.event-draggable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.event-draggable:active {
+  transform: translateY(0);
+  cursor: grabbing;
+}
+
+/* Past date styling */
+.calendar-cell.past-date {
+  opacity: 0.7;
+}
+
+/* X mark styling */
+.x-mark {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 0.75rem;
+}
+
+/* Calendar event hover effect */
+.calendar-event {
+  transition: all 0.2s ease;
+}
+
+.calendar-event:hover {
+  filter: brightness(95%);
+  transform: translateY(-1px);
+}
+
+/* Event deletion hint */
+.calendar-event:hover::after {
+  content: '×';
+  position: absolute;
+  right: 4px;
+  top: 0;
+  font-weight: bold;
+  opacity: 0.7;
+}
+</style>
+</head>
+<body class="bg-gray-50">
+  <div class="flex h-screen">
+    <!-- Collapsible Sidebar -->
+    <div class="sidebar bg-white shadow-md flex flex-col h-screen fixed z-10">
+      <div class="p-4 flex items-center justify-center border-b">
+        <div class="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
+          <span class="text-purple-600 font-semibold">S</span>
+        </div>
+        <div class="ml-3 nav-text">
+          <h2 class="text-lg font-semibold text-gray-800">Sarah</h2>
+          <p class="text-sm text-gray-500">sarah@corp.com</p>
+        </div>
+      </div>
+      <nav class="flex-1 pt-6 px-2 space-y-1">
+        <a href="#" class="nav-item nav-link flex items-center px-3 py-3 text-purple-600 bg-purple-50 rounded-lg font-medium relative" data-page="home">
+          <i class="fas fa-home text-xl w-6 text-center"></i>
+          <span class="ml-3 nav-text">Home</span>
+          <span class="menu-tooltip">Home</span>
+        </a>
+        <a href="#" class="nav-item nav-link flex items-center px-3 py-3 text-gray-600 hover:bg-gray-100 rounded-lg font-medium relative" data-page="jobs">
+          <i class="fas fa-briefcase text-xl w-6 text-center"></i>
+          <span class="ml-3 nav-text">Jobs</span>
+          <span class="menu-tooltip">Jobs</span>
+        </a>
+        <!-- <a href="#" class="nav-item nav-link flex items-center px-3 py-3 text-gray-600 hover:bg-gray-100 rounded-lg font-medium relative" data-page="candidates">
+          <i class="fas fa-users text-xl w-6 text-center"></i>
+          <span class="ml-3 nav-text">Candidates</span>
+          <span class="menu-tooltip">Candidates</span>
+        </a> -->
+        <a href="#" class="nav-item nav-link flex items-center px-3 py-3 text-gray-600 hover:bg-gray-100 rounded-lg font-medium relative" data-page="calendar">
+          <i class="fas fa-calendar-alt text-xl w-6 text-center"></i>
+          <span class="ml-3 nav-text">Calendar</span>
+          <span class="menu-tooltip">Calendar</span>
+        </a>
+        <!-- <a href="#" class="nav-item nav-link flex items-center px-3 py-3 text-gray-600 hover:bg-gray-100 rounded-lg font-medium relative" data-page="reports">
+          <i class="fas fa-chart-line text-xl w-6 text-center"></i>
+          <span class="ml-3 nav-text">Reports</span>
+          <span class="menu-tooltip">Reports</span>
+        </a> -->
+        <!-- Inside nav -->
+        <a href="#" class="nav-item nav-link flex items-center px-3 py-3 text-gray-600 hover:bg-gray-100 rounded-lg font-medium relative" data-page="contact">
+          <i class="fas fa-envelope text-xl w-6 text-center"></i>
+          <span class="ml-3 nav-text">Contact</span>
+          <span class="menu-tooltip">Contact</span>
+        </a>
+        <a href="#" class="nav-item nav-link flex items-center px-3 py-3 text-gray-600 hover:bg-gray-100 rounded-lg font-medium relative" data-page="settings">
+          <i class="fas fa-cog text-xl w-6 text-center"></i>
+          <span class="ml-3 nav-text">Settings</span>
+          <span class="menu-tooltip">Settings</span>
+        </a>
+      </nav>
+      <div class="p-4 mt-auto flex items-center justify-center">
+        <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+          <span class="text-white text-xs font-bold">TF</span>
+        </div>
+        <span class="ml-3 font-medium text-gray-800 nav-text">TalentFlow</span>
+      </div>
+    </div>
+    
+    <!-- Back Button -->
+    <button onclick="goBack()" class="back-button">
+      <i class="fas fa-arrow-left"></i>
+      <span>Back</span>
+    </button>
+
+    <script>
+        // Function to go back to the previous page
+        function goBack() {
+          window.history.back();
+        }
+        </script>
+
+    <!-- Main Content -->
+    <div class="content-wrapper flex-1 overflow-auto">
+      <!-- CONTACT PAGE CONTENT -->
+<div id="contact" class="page-content">
+  <div class="max-w-7xl mx-auto px-6 py-8">
+    <div class="fade-in">
+      <h1 class="text-2xl font-bold text-gray-800 mb-8">Let's get in touch</h1>
+      
+      <!-- Social Media Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <!-- Gmail Card -->
+        <div class="card-hover bg-red-50 rounded-xl p-6 flex items-center justify-between">
+          <div class="flex items-center">
+            <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+              <i class="fas fa-envelope text-red-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg font-semibold text-gray-800">Stay in Touch</h3>
+              <p class="text-gray-600">Reach out via email for any inquiries or collaborations.</p>
+            </div>
+          </div>
+          <a href="#" class="btn-hover px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+            Go to Gmail
+          </a>
+        </div>
+        
+        <!-- LinkedIn Card -->
+        <div class="card-hover bg-blue-50 rounded-xl p-6 flex items-center justify-between">
+          <div class="flex items-center">
+            <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+              <i class="fab fa-linkedin-in text-blue-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg font-semibold text-gray-800">Let's Connect</h3>
+              <p class="text-gray-600">Connect for collaboration or explore my professional experience.</p>
+            </div>
+          </div>
+          <a href="#" class="btn-hover px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            Go to LinkedIn
+          </a>
+        </div>
+        
+        <!-- Instagram Card -->
+        <div class="card-hover bg-pink-50 rounded-xl p-6 flex items-center justify-between">
+          <div class="flex items-center">
+            <div class="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center">
+              <i class="fab fa-instagram text-pink-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg font-semibold text-gray-800">Follow My Journey</h3>
+              <p class="text-gray-600">Stay updated with my latest posts and stories on Instagram.</p>
+            </div>
+          </div>
+          <a href="#" class="btn-hover px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700">
+            Go to Instagram
+          </a>
+        </div>
+        
+        <!-- Github Card -->
+        <div class="card-hover bg-gray-50 rounded-xl p-6 flex items-center justify-between">
+          <div class="flex items-center">
+            <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+              <i class="fab fa-github text-gray-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg font-semibold text-gray-800">Explore the Code</h3>
+              <p class="text-gray-600">Explore the source code for all my projects on GitHub.</p>
+            </div>
+          </div>
+          <a href="#" class="btn-hover px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900">
+            Go to Github
+          </a>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="card-hover bg-white rounded-xl shadow-sm border border-gray-100 p-8 fade-in-delay-1">
+        <h2 class="text-xl font-semibold mb-6">Or send me a message</h2>
+        <form class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+              <input type="text" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Your name">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+              <input type="email" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Your email">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+            <textarea rows="4" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Your message"></textarea>
+          </div>
+          <button type="submit" class="w-full btn-hover px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+            Send Email
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+      <!-- HOME PAGE CONTENT -->
+      <div id="home" class="page-content active">
+        <div class="max-w-7xl mx-auto px-6 py-8">
+          <!-- Header -->
+          <div class="flex justify-between items-center mb-8 fade-in">
+            <h1 class="text-2xl font-bold text-gray-800">Hello Sarah!!</h1>
+            <div class="flex space-x-3">
+              <button class="btn-hover flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50">
+                <i class="fas fa-file-alt text-gray-500 mr-2"></i>
+                Create a Job Post
+              </button>
+              <button class="btn-hover flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50">
+                <i class="fas fa-user-plus text-gray-500 mr-2"></i>
+                Add an Employee
+              </button>
+              <button class="btn-hover flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50">
+                <i class="fas fa-search text-gray-500 mr-2"></i>
+                Search Candidates
+                <span class="ml-2 text-xs py-0.5 px-1.5 bg-green-100 text-green-600 rounded-full">New</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Candidate Pipeline Card -->
+          <div class="card-hover bg-white rounded-xl shadow-sm border border-gray-100 mb-6 overflow-hidden fade-in-delay-1">
+            <div class="px-6 py-5 border-b flex justify-between items-center">
+              <div class="flex items-center">
+                <i class="fas fa-users text-purple-500 mr-3"></i>
+                <h2 class="text-lg font-semibold text-gray-800">Candidate Pipeline</h2>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button class="btn-hover px-3 py-1.5 text-sm bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200">
+                  <i class="fas fa-filter mr-1"></i>
+                  Filter
+                </button>
+                <button class="btn-hover px-3 py-1.5 text-sm bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200">
+                  <i class="fas fa-download mr-1"></i>
+                  Export
+                </button>
+                <a href="#" class="text-purple-600 font-medium hover:text-purple-700">Details →</a>
+              </div>
+            </div>
+            
+            <div class="px-6 py-6">
+              <div class="flex items-end justify-between gap-4">
+                <div class="text-center flex-1">
+                  <div class="bg-purple-600 text-white py-1 px-2 rounded-lg mb-3 text-sm inline-block">
+                    70 candidates
+                  </div>
+                  <div class="h-64 bg-purple-600 rounded-t-lg w-full"></div>
+                  <p class="mt-3 font-medium">Applied</p>
+                </div>
+                <div class="text-center flex-1">
+                  <div class="bg-purple-600 text-white py-1 px-2 rounded-lg mb-3 text-sm inline-block">
+                    35 candidates
+                  </div>
+                  <div class="h-40 bg-purple-600 rounded-t-lg w-full"></div>
+                  <p class="mt-3 font-medium">Under Review</p>
+                </div>
+                <div class="text-center flex-1">
+                  <div class="bg-purple-100 text-purple-600 py-1 px-2 rounded-lg mb-3 text-sm inline-block">
+                    10 candidates
+                  </div>
+                  <div class="h-20 bg-purple-100 rounded-t-lg w-full"></div>
+                  <p class="mt-3 font-medium">Interviewed</p>
+                </div>
+                <div class="text-center flex-1">
+                  <div class="bg-purple-100 text-purple-600 py-1 px-2 rounded-lg mb-3 text-sm inline-block">
+                    10 candidates
+                  </div>
+                  <div class="h-20 bg-purple-100 rounded-t-lg w-full"></div>
+                  <p class="mt-3 font-medium">Offered</p>
+                </div>
+                <div class="text-center flex-1">
+                  <div class="bg-purple-100 text-purple-600 py-1 px-2 rounded-lg mb-3 text-sm inline-block">
+                    10 candidates
+                  </div>
+                  <div class="h-20 bg-purple-100 rounded-t-lg w-full"></div>
+                  <p class="mt-3 font-medium">Hired</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Job Post Summary Card -->
+          <div class="card-hover bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden fade-in-delay-2">
+            <div class="px-6 py-5 border-b flex justify-between items-center">
+              <div class="flex items-center">
+                <i class="fas fa-briefcase text-purple-500 mr-3"></i>
+                <h2 class="text-lg font-semibold text-gray-800">Job Post Summary</h2>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button class="btn-hover px-3 py-1.5 text-sm bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200">
+                  <i class="fas fa-filter mr-1"></i>
+                  Filter
+                </button>
+                <button class="btn-hover px-3 py-1.5 text-sm bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200">
+                  <i class="fas fa-download mr-1"></i>
+                  Export
+                </button>
+                <a href="#" class="text-purple-600 font-medium hover:text-purple-700">Details →</a>
+              </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 px-6 py-5 border-b">
+              <div class="card-hover bg-pink-50 rounded-lg px-4 py-4 text-center">
+                <p class="text-3xl font-bold text-pink-500 mb-1">5</p>
+                <p class="text-gray-700">Open Positions</p>
+              </div>
+              <div class="card-hover bg-gray-50 rounded-lg px-4 py-4 text-center">
+                <p class="text-3xl font-bold text-gray-600 mb-1">3</p>
+                <p class="text-gray-700">Active Job Posts</p>
+              </div>
+              <div class="card-hover bg-gray-50 rounded-lg px-4 py-4 text-center">
+                <p class="text-3xl font-bold text-gray-600 mb-1">1</p>
+                <p class="text-gray-700">Pending Approval</p>
+              </div>
+              <div class="card-hover bg-gray-50 rounded-lg px-4 py-4 text-center relative">
+                <div class="absolute -top-1 -right-1 text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                  Closed last week
+                </div>
+                <p class="text-3xl font-bold text-gray-600 mb-1">1</p>
+                <p class="text-gray-700">Expired Posts</p>
+              </div>
+            </div>
+
+            <!-- Job List Table -->
+            <div class="px-6 py-4 overflow-x-auto">
+              <table class="w-full min-w-full">
+                <thead>
+                  <tr class="text-left text-gray-500 text-sm border-b">
+                    <th class="pb-3 font-medium">Image</th>
+                    <th class="pb-3 font-medium">Job Title</th>
+                    <th class="pb-3 font-medium">Status</th>
+                    <th class="pb-3 font-medium">Applicants</th>
+                    <th class="pb-3 font-medium">Expiration Date</th>
+                    <th class="pb-3 font-medium">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="table-row border-b">
+                    <td class="py-4">
+                      <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-code text-gray-400"></i>
+                      </div>
+                    </td>
+                    <td class="py-4 font-medium">Software Engineer</td>
+                    <td class="py-4">
+                      <span class="text-blue-600 bg-blue-50 px-2 py-1 rounded-full text-xs">Open</span>
+                    </td>
+                    <td class="py-4 font-medium">81</td>
+                    <td class="py-4 text-gray-600">Nov 15, 2024</td>
+                    <td class="py-4">
+                      <a href="#" class="btn-hover text-purple-600 hover:text-purple-700 font-medium">View</a>
+                    </td>
+                  </tr>
+                  <tr class="table-row border-b">
+                    <td class="py-4">
+                      <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bullhorn text-gray-400"></i>
+                      </div>
+                    </td>
+                    <td class="py-4 font-medium">Marketing Manager</td>
+                    <td class="py-4">
+                      <span class="text-blue-600 bg-blue-50 px-2 py-1 rounded-full text-xs">Open</span>
+                    </td>
+                    <td class="py-4 font-medium">12</td>
+                    <td class="py-4 text-gray-600">Nov 30, 2024</td>
+                    <td class="py-4">
+                      <a href="#" class="btn-hover text-purple-600 hover:text-purple-700 font-medium">View</a>
+                    </td>
+                  </tr>
+                  <tr class="table-row border-b">
+                    <td class="py-4">
+                      <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user-tie text-gray-400"></i>
+                      </div>
+                    </td>
+                    <td class="py-4 font-medium">HR Coordinator</td>
+                    <td class="py-4">
+                      <span class="text-yellow-600 bg-yellow-50 px-2 py-1 rounded-full text-xs">Pending Approval</span>
+                    </td>
+                    <td class="py-4 text-gray-400">-</td>
+                    <td class="py-4 text-gray-400">-</td>
+                    <td class="py-4">
+                      <a href="#" class="btn-hover text-purple-600 hover:text-purple-700 font-medium">View</a>
+                    </td>
+                  </tr>
+                  <tr class="table-row border-b">
+                    <td class="py-4">
+                      <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-gray-400"></i>
+                      </div>
+                    </td>
+                    <td class="py-4 font-medium">Sales Executive</td>
+                    <td class="py-4">
+                      <span class="text-red-600 bg-red-50 px-2 py-1 rounded-full text-xs">Expired</span>
+                    </td>
+                    <td class="py-4 font-medium">12</td>
+                    <td class="py-4 text-gray-600">Oct 05, 2024</td>
+                    <td class="py-4">
+                      <a href="#" class="btn-hover text-purple-600 hover:text-purple-700 font-medium">View</a>
+                    </td>
+                  </tr>
+                  <tr class="table-row">
+                    <td class="py-4">
+                      <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-pencil-ruler text-gray-400"></i>
+                      </div>
+                    </td>
+                    <td class="py-4 font-medium">Product Designer</td>
+                    <td class="py-4">
+                      <span class="text-blue-600 bg-blue-50 px-2 py-1 rounded-full text-xs">Open</span>
+                    </td>
+                    <td class="py-4 font-medium">12</td>
+                    <td class="py-4 text-gray-600">Nov 22, 2024</td>
+                    <td class="py-4">
+                      <a href="#" class="btn-hover text-purple-600 hover:text-purple-700 font-medium">View</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- JOBS PAGE CONTENT -->
+      <div id="jobs" class="page-content">
+        <div class="max-w-7xl mx-auto px-6 py-8">
+          <!-- Header -->
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 fade-in">
+            <h1 class="text-2xl font-bold text-gray-800">Job Management</h1>
+            <div class="flex flex-wrap gap-3">
+              <button class="btn-hover flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg shadow-sm hover:bg-purple-700">
+                <i class="fas fa-plus text-white mr-2"></i>
+                Create New Job
+              </button>
+              <button class="btn-hover flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50">
+                <i class="fas fa-download text-gray-500 mr-2"></i>
+                Export Jobs
+              </button>
+            </div>
+          </div>
+
+          <!-- Job Statistics -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+            <div class="card-hover bg-white p-6 rounded-xl shadow-sm border border-gray-100 fade-in-delay-1">
+              <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                  <i class="fas fa-briefcase text-blue-600 text-xl"></i>
+                </div>
+                <div>
+                  <p class="text-gray-500 text-sm">Total Jobs</p>
+                  <p class="text-2xl font-bold text-gray-800">9</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-hover bg-white p-6 rounded-xl shadow-sm border border-gray-100 fade-in-delay-1">
+              <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mr-4">
+                  <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                </div>
+                <div>
+                  <p class="text-gray-500 text-sm">Active Jobs</p>
+                  <p class="text-2xl font-bold text-gray-800">3</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-hover bg-white p-6 rounded-xl shadow-sm border border-gray-100 fade-in-delay-1">
+              <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center mr-4">
+                  <i class="fas fa-hourglass-half text-yellow-600 text-xl"></i>
+                </div>
+                <div>
+                  <p class="text-gray-500 text-sm">Pending Approval</p>
+                  <p class="text-2xl font-bold text-gray-800">1</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-hover bg-white p-6 rounded-xl shadow-sm border border-gray-100 fade-in-delay-1">
+              <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mr-4">
+                  <i class="fas fa-exclamation-circle text-red-600 text-xl"></i>
+                </div>
+                <div>
+                  <p class="text-gray-500 text-sm">Expired Jobs</p>
+                  <p class="text-2xl font-bold text-gray-800">5</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Job Listings -->
+          <div class="card-hover bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden fade-in-delay-2">
+            <div class="px-6 py-5 border-b flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div class="flex items-center">
+                <i class="fas fa-list text-purple-500 mr-3"></i>
+                <h2 class="text-lg font-semibold text-gray-800">All Jobs</h2>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <div class="relative">
+                  <input type="text" placeholder="Search jobs..." class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                  <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+                <button class="btn-hover px-3 py-1.5 text-sm bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200">
+                  <i class="fas fa-filter mr-1"></i>
+                  Filter
+                </button>
+              </div>
+            </div>
+
+            <!-- Job List Table -->
+            <div class="px-6 py-4 overflow-x-auto">
+              <table class="w-full min-w-full">
+                <thead>
+                  <tr class="text-left text-gray-500 text-sm border-b">
+                    <th class="pb-3 font-medium">Job Title</th>
+                    <th class="pb-3 font-medium">Department</th>
+                    <th class="pb-3 font-medium">Status</th>
+                    <th class="pb-3 font-medium">Applicants</th>
+                    <th class="pb-3 font-medium">Posting Date</th>
+                    <th class="pb-3 font-medium">Expiration Date</th>
+                    <th class="pb-3 font-medium">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="table-row border-b">
+                    <td class="py-4 font-medium">Software Engineer</td>
+                    <td class="py-4 text-gray-600">Engineering</td>
+                    <td class="py-4">
+                      <span class="text-blue-600 bg-blue-50 px-2 py-1 rounded-full text-xs">Open</span>
+                    </td>
+                    <td class="py-4 font-medium">81</td>
+                    <td class="py-4 text-gray-600">Oct 05, 2024</td>
+                    <td class="py-4 text-gray-600">Nov 15, 2024</td>
+                    <td class="py-4">
+                      <div class="flex space-x-2">
+                        <a href="#" class="btn-hover text-blue-600 hover:text-blue-700">
+                          <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="#" class="btn-hover text-yellow-600 hover:text-yellow-700">
+                          <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="#" class="btn-hover text-red-600 hover:text-red-700">
+                          <i class="fas fa-trash-alt"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="table-row border-b">
+                    <td class="py-4 font-medium">Marketing Manager</td>
+                    <td class="py-4 text-gray-600">Marketing</td>
+                    <td class="py-4">
+                      <span class="text-blue-600 bg-blue-50 px-2 py-1 rounded-full text-xs">Open</span>
+                    </td>
+                    <td class="py-4 font-medium">12</td>
+                    <td class="py-4 text-gray-600">Oct 10, 2024</td>
+                    <td class="py-4 text-gray-600">Nov 30, 2024</td>
+                    <td class="py-4">
+                      <div class="flex space-x-2">
+                        <a href="#" class="btn-hover text-blue-600 hover:text-blue-700">
+                          <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="#" class="btn-hover text-yellow-600 hover:text-yellow-700">
+                          <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="#" class="btn-hover text-red-600 hover:text-red-700">
+                          <i class="fas fa-trash-alt"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="table-row border-b">
+                    <td class="py-4 font-medium">HR Coordinator</td>
+                    <td class="py-4 text-gray-600">Human Resources</td>
+                    <td class="py-4">
+                      <span class="text-yellow-600 bg-yellow-50 px-2 py-1 rounded-full text-xs">Pending Approval</span>
+                    </td>
+                    <td class="py-4 text-gray-400">-</td>
+                    <td class="py-4 text-gray-400">-</td>
+                    <td class="py-4 text-gray-400">-</td>
+                    <td class="py-4">
+                      <div class="flex space-x-2">
+                        <a href="#" class="btn-hover text-blue-600 hover:text-blue-700">
+                          <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="#" class="btn-hover text-yellow-600 hover:text-yellow-700">
+                          <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="#" class="btn-hover text-red-600 hover:text-red-700">
+                          <i class="fas fa-trash-alt"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="table-row border-b">
+                    <td class="py-4 font-medium">Sales Executive</td>
+                    <td class="py-4 text-gray-600">Sales</td>
+                    <td class="py-4">
+                      <span class="text-red-600 bg-red-50 px-2 py-1 rounded-full text-xs">Expired</span>
+                    </td>
+                    <td class="py-4 font-medium">12</td>
+                    <td class="py-4 text-gray-600">Aug 15, 2024</td>
+                    <td class="py-4 text-gray-600">Oct 05, 2024</td>
+                    <td class="py-4">
+                      <div class="flex space-x-2">
+                        <a href="#" class="btn-hover text-blue-600 hover:text-blue-700">
+                          <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="#" class="btn-hover text-yellow-600 hover:text-yellow-700">
+                          <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="#" class="btn-hover text-red-600 hover:text-red-700">
+                          <i class="fas fa-trash-alt"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="table-row border-b">
+                    <td class="py-4 font-medium">Product Designer</td>
+                    <td class="py-4 text-gray-600">Design</td>
+                    <td class="py-4">
+                      <span class="text-blue-600 bg-blue-50 px-2 py-1 rounded-full text-xs">Open</span>
+                    </td>
+                    <td class="py-4 font-medium">12</td>
+                    <td class="py-4 text-gray-600">Oct 01, 2024</td>
+                    <td class="py-4 text-gray-600">Nov 22, 2024</td>
+                    <td class="py-4">
+                      <div class="flex space-x-2">
+                        <a href="#" class="btn-hover text-blue-600 hover:text-blue-700">
+                          <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="#" class="btn-hover text-yellow-600 hover:text-yellow-700">
+                          <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="#" class="btn-hover text-red-600 hover:text-red-700">
+                          <i class="fas fa-trash-alt"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="px-6 py-4 border-t">
+              <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-sm">Showing 5 of 9 jobs</p>
+                <div class="flex space-x-1">
+                  <button class="px-3 py-1 rounded border border-gray-200 text-gray-600 hover:bg-gray-50">
+                    <i class="fas fa-chevron-left"></i>
+                  </button>
+                  <button class="px-3 py-1 rounded border border-gray-200 bg-purple-600 text-white">1</button>
+                  <button class="px-3 py-1 rounded border border-gray-200 text-gray-600 hover:bg-gray-50">2</button>
+                  <button class="px-3 py-1 rounded border border-gray-200 text-gray-600 hover:bg-gray-50">
+                    <i class="fas fa-chevron-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CANDIDATES PAGE CONTENT -->
+      <div id="candidates" class="page-content">
+        <div class="max-w-7xl mx-auto px-6 py-8">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 fade-in">
+            <h1 class="text-2xl font-bold text-gray-800">Candidate Management</h1>
+            <div class="flex flex-wrap gap-3">
+              <button class="btn-hover flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg shadow-sm hover:bg-purple-700">
+                <i class="fas fa-user-plus text-white mr-2"></i>
+                Add Candidate
+              </button>
+              <button class="btn-hover flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50">
+                <i class="fas fa-download text-gray-500 mr-2"></i>
+                Export Candidates
+              </button>
+            </div>
+          </div>
+          
+          <div class="bg-white p-8 rounded-xl shadow-sm mb-8 fade-in-delay-1">
+            <h2 class="text-xl font-semibold mb-6">Candidates Content Coming Soon</h2>
+            <p class="text-gray-600 mb-4">The Candidates section is under development. Check back soon for updates!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CALENDAR PAGE CONTENT -->
+      <div id="calendar" class="page-content">
+        <div class="max-w-7xl mx-auto px-6 py-8">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 fade-in">
+            <h1 class="text-2xl font-bold text-gray-800">Scheduling Calendar</h1>
+            <div class="flex flex-wrap gap-3">
+              <button id="addEventBtn" class="btn-hover flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg shadow-sm hover:bg-purple-700">
+                <i class="fas fa-plus text-white mr-2"></i>
+                Add Event
+              </button>
+            </div>
+          </div>
+      
+          <!-- Calendar Container -->
+          <div class="bg-white rounded-xl shadow-sm overflow-hidden fade-in-delay-1">
+            <!-- Calendar Header -->
+            <div class="p-4 border-b border-gray-200">
+              <h3 class="text-sm font-medium text-gray-600 mb-3">Drag & Drop Events</h3>
+              <div class="flex gap-2 flex-wrap">
+                <div class="event-draggable bg-purple-100 text-purple-800 px-3 py-1.5 rounded-lg cursor-move" draggable="true">
+                  Meeting
+                </div>
+                <div class="event-draggable bg-blue-100 text-blue-800 px-3 py-1.5 rounded-lg cursor-move" draggable="true">
+                  Interview
+                </div>
+                <div class="event-draggable bg-green-100 text-green-800 px-3 py-1.5 rounded-lg cursor-move" draggable="true">
+                  Training
+                </div>
+                <div class="event-draggable bg-red-100 text-red-800 px-3 py-1.5 rounded-lg cursor-move" draggable="true">
+                  Deadline
+                </div>
+                <div class="event-draggable bg-yellow-100 text-yellow-800 px-3 py-1.5 rounded-lg cursor-move" draggable="true">
+                  Review
+                </div>
+              </div>
+            </div>
+            <div class="p-6 border-b border-gray-200">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-4">
+                  <button id="prevMonth" class="p-2 hover:bg-gray-100 rounded-full">
+                    <i class="fas fa-chevron-left text-gray-600"></i>
+                  </button>
+                  <h2 id="currentMonth" class="text-xl font-semibold text-gray-800"></h2>
+                  <button id="nextMonth" class="p-2 hover:bg-gray-100 rounded-full">
+                    <i class="fas fa-chevron-right text-gray-600"></i>
+                  </button>
+                </div>
+                <button id="todayBtn" class="px-4 py-2 text-sm text-purple-600 hover:bg-purple-50 rounded-lg">
+                  Today
+                </button>
+              </div>
+      
+              <!-- Calendar Days Header -->
+              <div class="grid grid-cols-7 gap-2 mb-2">
+                <div class="text-center text-sm font-medium text-gray-500">Sun</div>
+                <div class="text-center text-sm font-medium text-gray-500">Mon</div>
+                <div class="text-center text-sm font-medium text-gray-500">Tue</div>
+                <div class="text-center text-sm font-medium text-gray-500">Wed</div>
+                <div class="text-center text-sm font-medium text-gray-500">Thu</div>
+                <div class="text-center text-sm font-medium text-gray-500">Fri</div>
+                <div class="text-center text-sm font-medium text-gray-500">Sat</div>
+              </div>
+            </div>
+      
+            <!-- Calendar Grid -->
+            <div id="calendarGrid" class="p-6 grid grid-cols-7 gap-2">
+              <!-- Calendar days will be dynamically inserted here -->
+            </div>
+          </div>
+        </div>
+      
+        <!-- Add Event Modal -->
+        <div id="eventModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+          <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-lg">
+            <div class="flex justify-between items-center mb-6">
+              <h3 class="text-xl font-semibold">Add New Event</h3>
+              <button type="button" id="closeModalBtn" class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            
+            <form id="eventForm">
+              <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Event Title / Custom Note</label>
+                <input type="text" id="eventTitle" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+              </div>
+              
+              
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Date</label>
+                  <input type="date" id="eventDate" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Time</label>
+                  <input type="time" id="eventTime" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                </div>
+              </div>
+              <!-- Choses color event -->
+              <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Color</label>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  <label for="colorPurple" class="color-option cursor-pointer">
+                    <input type="radio" name="eventColorRadio" id="colorPurple" value="bg-purple-100 text-purple-800" class="sr-only">
+                    <div class="w-full h-8 bg-purple-100 rounded-lg border-2 border-transparent flex items-center justify-center">
+                      <span class="text-purple-800 text-xs">Meeting</span>
+                    </div>
+                  </label>
+                  <label for="colorBlue" class="color-option cursor-pointer">
+                    <input type="radio" name="eventColorRadio" id="colorBlue" value="bg-blue-100 text-blue-800" class="sr-only">
+                    <div class="w-full h-8 bg-blue-100 rounded-lg border-2 border-transparent flex items-center justify-center">
+                      <span class="text-blue-800 text-xs">Interview</span>
+                    </div>
+                  </label>
+                  <label for="colorGreen" class="color-option cursor-pointer">
+                    <input type="radio" name="eventColorRadio" id="colorGreen" value="bg-green-100 text-green-800" class="sr-only">
+                    <div class="w-full h-8 bg-green-100 rounded-lg border-2 border-transparent flex items-center justify-center">
+                      <span class="text-green-800 text-xs">Training</span>
+                    </div>
+                  </label>
+                  <label for="colorRed" class="color-option cursor-pointer">
+                    <input type="radio" name="eventColorRadio" id="colorRed" value="bg-red-100 text-red-800" class="sr-only">
+                    <div class="w-full h-8 bg-red-100 rounded-lg border-2 border-transparent flex items-center justify-center">
+                      <span class="text-red-800 text-xs">Deadline</span>
+                    </div>
+                  </label>
+                  <label for="colorYellow" class="color-option cursor-pointer">
+                    <input type="radio" name="eventColorRadio" id="colorYellow" value="bg-yellow-100 text-yellow-800" class="sr-only">
+                    <div class="w-full h-8 bg-yellow-100 rounded-lg border-2 border-transparent flex items-center justify-center">
+                      <span class="text-yellow-800 text-xs">Review</span>
+                    </div>
+                  </label>
+                </div>
+              
+                <!-- Custom Color Picker -->
+                <div class="mt-4">
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Or choose your own color</label>
+                  <input type="color" id="customColorPicker" class="w-16 h-8 p-0 border border-gray-300 rounded-lg">
+                </div>
+              
+                <input type="hidden" id="eventColor" value="">
+              </div>
+              
+              <div class="flex justify-end gap-3">
+                <button type="button" id="cancelEventBtn" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition">
+                  Cancel
+                </button>
+                <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
+                  Save Event
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      <!-- REPORTS PAGE CONTENT -->
+      <!-- <div id="reports" class="page-content">
+        <div class="max-w-7xl mx-auto px-6 py-8">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 fade-in">
+            <h1 class="text-2xl font-bold text-gray-800">Analytics & Reports</h1>
+            <div class="flex flex-wrap gap-3">
+              <button class="btn-hover flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50">
+                <i class="fas fa-download text-gray-500 mr-2"></i>
+                Export Reports
+              </button>
+            </div>
+          </div> -->
+          
+          <!-- <div class="bg-white p-8 rounded-xl shadow-sm mb-8 fade-in-delay-1">
+            <h2 class="text-xl font-semibold mb-6">Reports Content Coming Soon</h2>
+            <p class="text-gray-600 mb-4">The Reports section is under development. Check back soon for updates!</p>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- SETTINGS PAGE CONTENT -->
+      <div id="settings" class="page-content">
+        <div class="max-w-7xl mx-auto px-6 py-8">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 fade-in">
+            <h1 class="text-2xl font-bold text-gray-800">Account Settings</h1>
+            <div class="flex flex-wrap gap-3">
+              <button class="btn-hover flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg shadow-sm hover:bg-purple-700">
+                <i class="fas fa-save text-white mr-2"></i>
+                Save Changes
+              </button>
+            </div>
+          </div>
+          
+          <div class="bg-white p-8 rounded-xl shadow-sm mb-8 fade-in-delay-1">
+            <h2 class="text-xl font-semibold mb-6">Settings Content Coming Soon</h2>
+            <p class="text-gray-600 mb-4">The Settings section is under development. Check back soon for updates!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript for navigation -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const navLinks = document.querySelectorAll('.nav-link');
+      const pages = document.querySelectorAll('.page-content');
+      
+      // Add click event to each nav link
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Get the page id from data attribute
+          const pageId = this.getAttribute('data-page');
+          
+          // Remove active class from all links
+          navLinks.forEach(navLink => {
+            navLink.classList.remove('text-purple-600', 'bg-purple-50');
+            navLink.classList.add('text-gray-600', 'hover:bg-gray-100');
+          });
+          
+          // Add active class to clicked link
+          this.classList.remove('text-gray-600', 'hover:bg-gray-100');
+          this.classList.add('text-purple-600', 'bg-purple-50');
+          
+          // Hide all pages
+          pages.forEach(page => {
+            page.classList.remove('active');
+          });
+          
+          // Show the selected page
+          document.getElementById(pageId).classList.add('active');
+        });
+      });
+    });
+  </script>
+<!-- Javascript For Calendar -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Calendar variables
+      let currentDate = new Date();
+      let events = JSON.parse(localStorage.getItem('calendarEvents')) || {};
+    
+      // DOM elements
+      const currentMonthElement = document.getElementById('currentMonth');
+      const calendarGrid = document.getElementById('calendarGrid');
+      const prevMonthBtn = document.getElementById('prevMonth');
+      const nextMonthBtn = document.getElementById('nextMonth');
+      const todayBtn = document.getElementById('todayBtn');
+      const addEventBtn = document.getElementById('addEventBtn');
+      const eventModal = document.getElementById('eventModal');
+      const eventForm = document.getElementById('eventForm');
+      const cancelEventBtn = document.getElementById('cancelEventBtn');
+      const eventDraggables = document.querySelectorAll('.event-draggable');
+    
+      // Initialize calendar
+      function initCalendar() {
+        updateCalendarHeader();
+        renderCalendar();
+        setupEventListeners();
+        setupDragAndDrop();
+      }
+    
+      function setupEventListeners() {
+        prevMonthBtn.addEventListener('click', () => {
+          currentDate.setMonth(currentDate.getMonth() - 1);
+          updateCalendarHeader();
+          renderCalendar();
+        });
+    
+        nextMonthBtn.addEventListener('click', () => {
+          currentDate.setMonth(currentDate.getMonth() + 1);
+          updateCalendarHeader();
+          renderCalendar();
+        });
+    
+        todayBtn.addEventListener('click', () => {
+          currentDate = new Date();
+          updateCalendarHeader();
+          renderCalendar();
+        });
+    
+        addEventBtn.addEventListener('click', () => {
+          // Set today's date as default when opening modal directly
+          const today = new Date();
+          const formattedDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+          document.getElementById('eventDate').value = formattedDate;
+          
+          eventModal.classList.remove('hidden');
+        });
+    
+        cancelEventBtn.addEventListener('click', () => {
+          eventModal.classList.add('hidden');
+          eventForm.reset();
+        });
+    
+        eventForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          saveEvent(); // ganti dari addEvent()
+        });
+        
+      }
+    
+      // Setup drag and drop functionality
+      function setupDragAndDrop() {
+        // Make events draggable
+        eventDraggables.forEach(draggable => {
+          draggable.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', draggable.textContent.trim());
+          });
+        });
+    
+        // Add event listeners after calendar is rendered
+        const calendarCells = document.querySelectorAll('.calendar-cell');
+        calendarCells.forEach(cell => {
+          // Allow dropping
+          cell.addEventListener('dragover', (e) => {
+            // Only allow dropping if cell has a date attribute (not empty cells)
+            if (cell.getAttribute('data-date')) {
+              e.preventDefault();
+              cell.classList.add('bg-purple-100', 'border-purple-300');
+            }
+          });
+    
+          // Reset styling when drag leaves
+          cell.addEventListener('dragleave', () => {
+            cell.classList.remove('bg-purple-100', 'border-purple-300');
+          });
+    
+          // Handle drop event
+          cell.addEventListener('drop', (e) => {
+            e.preventDefault();
+            cell.classList.remove('bg-purple-100', 'border-purple-300');
+            
+            const eventType = e.dataTransfer.getData('text/plain');
+            const dateString = cell.getAttribute('data-date');
+            
+            // Only process if cell has a date
+            if (dateString) {
+              // Set form values
+              document.getElementById('eventTitle').value = eventType;
+              document.getElementById('eventDate').value = dateString;
+              
+              // Set a default time (current time)
+              const now = new Date();
+              const hours = now.getHours().toString().padStart(2, '0');
+              const minutes = now.getMinutes().toString().padStart(2, '0');
+              document.getElementById('eventTime').value = `${hours}:${minutes}`;
+              
+              // Set color based on event type
+              const colorSelect = document.getElementById('eventColor');
+              switch (eventType.toLowerCase()) {
+                case 'meeting':
+                  colorSelect.value = 'bg-purple-100 text-purple-800';
+                  break;
+                case 'interview':
+                  colorSelect.value = 'bg-blue-100 text-blue-800';
+                  break;
+                case 'training':
+                  colorSelect.value = 'bg-green-100 text-green-800';
+                  break;
+                case 'deadline':
+                  colorSelect.value = 'bg-red-100 text-red-800';
+                  break;
+                case 'review':
+                  colorSelect.value = 'bg-yellow-100 text-yellow-800';
+                  break;
+              }
+              
+              // Show modal
+              eventModal.classList.remove('hidden');
+            }
+          });
+        });
+      }
+    
+      // Update calendar header
+      function updateCalendarHeader() {
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                       'July', 'August', 'September', 'October', 'November', 'December'];
+        currentMonthElement.textContent = `${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+      }
+    
+      // Render calendar
+      function renderCalendar() {
+        calendarGrid.innerHTML = '';
+        
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const daysInMonth = lastDay.getDate();
+        const startingDay = firstDay.getDay();
+        const today = new Date();
+    
+        // Create calendar grid
+        for (let i = 0; i < (startingDay + daysInMonth); i++) {
+          const cell = document.createElement('div');
+          cell.className = 'calendar-cell h-32 border border-gray-100 rounded-lg p-2 overflow-auto relative';
+    
+          if (i < startingDay) {
+            // Empty cells before the first day
+            cell.className += ' bg-gray-50';
+          } else {
+            const day = i - startingDay + 1;
+            const dateString = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+            const cellDate = new Date(year, month, day);
+            
+            cell.setAttribute('data-date', dateString);
+    
+            // Add day number
+            const dayNumberContainer = document.createElement('div');
+            dayNumberContainer.className = 'text-right text-sm font-medium mb-1 flex justify-between items-center';
+            
+            // Check if date is in the past
+            const isPastDate = cellDate < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            
+            if (isPastDate) {
+              // Add X mark for past dates
+              const xMark = document.createElement('span');
+              xMark.className = 'text-red-500';
+              xMark.textContent = '✕';
+              dayNumberContainer.appendChild(xMark);
+              
+              // Gray out past dates
+              cell.classList.add('bg-gray-50');
+            }
+            
+            const dayNumberText = document.createElement('span');
+            dayNumberText.textContent = day;
+            dayNumberContainer.appendChild(dayNumberText);
+            
+            cell.appendChild(dayNumberContainer);
+    
+            // Highlight current day
+            if (day === today.getDate() && 
+                month === today.getMonth() && 
+                year === today.getFullYear()) {
+              cell.classList.remove('bg-gray-50');
+              cell.classList.add('bg-purple-50');
+              dayNumberText.classList.add('text-purple-600');
+            }
+    
+            // Add events for this day
+            if (events[dateString]) {
+              events[dateString].forEach(event => {
+                const eventElement = document.createElement('div');
+                eventElement.className = `${event.color} text-xs p-1 rounded mb-1 truncate cursor-pointer`;
+                eventElement.textContent = `${event.time} ${event.title}`;
+                
+                // Add delete functionality for events
+                eventElement.addEventListener('click', () => {
+                  if (confirm(`Delete event: ${event.title}?`)) {
+                    // Remove event from storage
+                    events[dateString] = events[dateString].filter(e => 
+                      e.title !== event.title || e.time !== event.time);
+                    
+                    if (events[dateString].length === 0) {
+                      delete events[dateString];
+                    }
+                    
+                    localStorage.setItem('calendarEvents', JSON.stringify(events));
+                    renderCalendar();
+                  }
+                });
+                
+                cell.appendChild(eventElement);
+              });
+            }
+          }
+    
+          calendarGrid.appendChild(cell);
+        }
+    
+        // Add empty cells at the end if needed
+        const totalCells = Math.ceil((startingDay + daysInMonth) / 7) * 7;
+        for (let i = (startingDay + daysInMonth); i < totalCells; i++) {
+          const cell = document.createElement('div');
+          cell.className = 'h-32 border border-gray-100 rounded-lg bg-gray-50';
+          calendarGrid.appendChild(cell);
+        }
+        
+        // Setup drag and drop after rendering
+        setupDragAndDrop();
+      }
+    
+      // Add new event
+      function addEvent() {
+        const title = document.getElementById('eventTitle').value;
+        const date = document.getElementById('eventDate').value;
+        const time = document.getElementById('eventTime').value;
+        const color = document.getElementById('eventColor').value;
+    
+        if (!events[date]) {
+          events[date] = [];
+        }
+    
+        events[date].push({
+          title,
+          time,
+          color
+        });
+    
+        // Sort events by time
+        events[date].sort((a, b) => a.time.localeCompare(b.time));
+    
+        // Save to localStorage
+        localStorage.setItem('calendarEvents', JSON.stringify(events));
+    
+        // Update calendar and close modal
+        renderCalendar();
+        eventModal.classList.add('hidden');
+        eventForm.reset();
+      }
+    
+      // Initialize calendar
+      initCalendar();
+    });
+
+    // Handle color selection
+document.addEventListener('DOMContentLoaded', function() {
+  // Set up color radio buttons
+  const colorOptions = document.querySelectorAll('input[name="eventColorRadio"]');
+  const eventColorInput = document.getElementById('eventColor');
+  
+  colorOptions.forEach(option => {
+    option.addEventListener('change', function() {
+      // Update hidden input with selected color
+      eventColorInput.value = this.value;
+      
+      // Update visual selection
+      document.querySelectorAll('.color-option div').forEach(div => {
+        div.classList.remove('border-purple-500', 'border-blue-500', 'border-green-500', 'border-red-500', 'border-yellow-500');
+      });
+      
+      // Add border to selected option
+      const colorClass = this.value.split(' ')[0].replace('bg', 'border');
+      this.parentElement.querySelector('div').classList.add(colorClass + '-500');
+    });
+  });
+  
+  // Add close button functionality
+  const closeModalBtn = document.getElementById('closeModalBtn');
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', function() {
+      document.getElementById('eventModal').classList.add('hidden');
+      document.getElementById('eventForm').reset();
+    });
+  }
+  
+  // Pre-select the first color option by default
+  if (colorOptions.length > 0) {
+    colorOptions[0].checked = true;
+  }
+});
+ //Scroll calendar Event
+  document.addEventListener('dragover', function (e) {
+    const scrollThreshold = 100;
+    const scrollSpeed = 10;
+
+    if (e.clientY < scrollThreshold) {
+      window.scrollBy(0, -scrollSpeed);
+    } else if (window.innerHeight - e.clientY < scrollThreshold) {
+      window.scrollBy(0, scrollSpeed);
+    }
+  });
+
+  //Chose Color Event
+  function saveEvent() {
+    const title = document.getElementById('eventTitle').value;
+    const date = document.getElementById('eventDate').value;
+    const time = document.getElementById('eventTime').value;
+    const rawColor = document.getElementById('eventColor').value;
+let color = rawColor;
+let isCustom = false;
+
+if (!rawColor.startsWith('bg-')) {
+  color = rawColor; // e.g. "#ff0000"
+  isCustom = true;
+}
+
+  
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const colorOptions = document.querySelectorAll('input[name="eventColorRadio"]');
+        const hiddenColorInput = document.getElementById("eventColor");
+    
+        colorOptions.forEach(option => {
+          option.addEventListener("change", function () {
+            hiddenColorInput.value = this.value;
+    
+            document.querySelectorAll(".color-option div").forEach(div => {
+              div.classList.remove("ring-2", "ring-offset-2", "ring-purple-500");
+            });
+    
+            this.nextElementSibling.classList.add("ring-2", "ring-offset-2", "ring-purple-500");
+          });
+        });
+    
+        // Pre-select first color if nothing selected
+        if (colorOptions.length > 0 && !hiddenColorInput.value) {
+          colorOptions[0].checked = true;
+          colorOptions[0].dispatchEvent(new Event("change"));
+        }
+      });
+    </script>
+
+    <!-- SCRIPT PEMILIHAN WARNA & CUSTOM COLOR -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const colorOptions = document.querySelectorAll('input[name="eventColorRadio"]');
+    const hiddenColorInput = document.getElementById("eventColor");
+    const customColorPicker = document.getElementById("customColorPicker");
+
+    colorOptions.forEach(option => {
+      option.addEventListener("change", function () {
+        hiddenColorInput.value = this.value;
+
+        document.querySelectorAll(".color-option div").forEach(div => {
+          div.classList.remove("ring-2", "ring-offset-2", "ring-purple-500");
+        });
+
+        this.nextElementSibling.classList.add("ring-2", "ring-offset-2", "ring-purple-500");
+      });
+    });
+
+    // Custom color handler
+    customColorPicker.addEventListener("input", function () {
+      const color = this.value;
+      hiddenColorInput.value = `bg-[${color}] text-white`;
+
+      colorOptions.forEach(opt => opt.checked = false);
+      document.querySelectorAll(".color-option div").forEach(div => {
+        div.classList.remove("ring-2", "ring-offset-2", "ring-purple-500");
+      });
+    });
+
+    if (colorOptions.length > 0 && !hiddenColorInput.value) {
+      colorOptions[0].checked = true;
+      colorOptions[0].dispatchEvent(new Event("change"));
+    }
+  });
+</script>
+
+<!-- SCRIPT UNTUK FORM EVENT YANG TELAH DIPERBAIKI -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    let currentDate = new Date();
+    let events = JSON.parse(localStorage.getItem('calendarEvents')) || {};
+
+    const currentMonthElement = document.getElementById('currentMonth');
+    const calendarGrid = document.getElementById('calendarGrid');
+    const prevMonthBtn = document.getElementById('prevMonth');
+    const nextMonthBtn = document.getElementById('nextMonth');
+    const todayBtn = document.getElementById('todayBtn');
+    const addEventBtn = document.getElementById('addEventBtn');
+    const eventModal = document.getElementById('eventModal');
+    const eventForm = document.getElementById('eventForm');
+    const cancelEventBtn = document.getElementById('cancelEventBtn');
+
+    function initCalendar() {
+      updateCalendarHeader();
+      renderCalendar();
+      setupEventListeners();
+    }
+
+    function updateCalendarHeader() {
+      const months = ['January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'];
+      currentMonthElement.textContent = `${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+    }
+
+    function renderCalendar() {
+      calendarGrid.innerHTML = '';
+
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const daysInMonth = lastDay.getDate();
+      const startingDay = firstDay.getDay();
+      const today = new Date();
+
+      for (let i = 0; i < (startingDay + daysInMonth); i++) {
+        const cell = document.createElement('div');
+        cell.className = 'calendar-cell h-32 border border-gray-100 rounded-lg p-2 overflow-auto relative';
+
+        if (i < startingDay) {
+          cell.className += ' bg-gray-50';
+        } else {
+          const day = i - startingDay + 1;
+          const dateString = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+          const cellDate = new Date(year, month, day);
+          cell.setAttribute('data-date', dateString);
+
+          const dayNumber = document.createElement('div');
+          dayNumber.className = 'text-right text-sm font-medium mb-1';
+          dayNumber.textContent = day;
+
+          if (cellDate < new Date(today.getFullYear(), today.getMonth(), today.getDate())) {
+            cell.classList.add('bg-gray-50');
+          }
+
+          cell.appendChild(dayNumber);
+
+          if (events[dateString]) {
+            events[dateString].forEach(event => {
+              const eventElement = document.createElement('div');
+              const isCustom = event.color.startsWith('#');
+
+              if (isCustom) {
+                eventElement.setAttribute('style', `background-color: ${event.color}; color: white`);
+                eventElement.className = 'text-xs p-1 rounded mb-1 truncate cursor-pointer';
+              } else {
+                eventElement.className = `${event.color} text-xs p-1 rounded mb-1 truncate cursor-pointer`;
+              }
+
+              eventElement.textContent = `${event.time} ${event.title}`;
+
+              eventElement.addEventListener('click', () => {
+                if (confirm(`Delete event: ${event.title}?`)) {
+                  events[dateString] = events[dateString].filter(e => e.title !== event.title || e.time !== event.time);
+                  if (events[dateString].length === 0) delete events[dateString];
+                  localStorage.setItem('calendarEvents', JSON.stringify(events));
+                  renderCalendar();
+                }
+              });
+
+              cell.appendChild(eventElement);
+            });
+          }
+        }
+
+        calendarGrid.appendChild(cell);
+      }
+    }
+
+    function setupEventListeners() {
+      prevMonthBtn.addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        updateCalendarHeader();
+        renderCalendar();
+      });
+
+      nextMonthBtn.addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        updateCalendarHeader();
+        renderCalendar();
+      });
+
+      todayBtn.addEventListener('click', () => {
+        currentDate = new Date();
+        updateCalendarHeader();
+        renderCalendar();
+      });
+
+      addEventBtn.addEventListener('click', () => {
+        const today = new Date();
+        document.getElementById('eventDate').value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        eventModal.classList.remove('hidden');
+      });
+
+      cancelEventBtn.addEventListener('click', () => {
+        eventModal.classList.add('hidden');
+        eventForm.reset();
+      });
+
+      eventForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        saveEvent();
+      });
+    }
+
+    function saveEvent() {
+      const title = document.getElementById('eventTitle').value;
+      const date = document.getElementById('eventDate').value;
+      const time = document.getElementById('eventTime').value;
+      const rawColor = document.getElementById('eventColor').value;
+
+      let color = rawColor;
+      if (!color) color = '#a78bfa';
+
+      if (!events[date]) events[date] = [];
+      events[date].push({ title, time, color });
+      events[date].sort((a, b) => a.time.localeCompare(b.time));
+      localStorage.setItem('calendarEvents', JSON.stringify(events));
+
+      renderCalendar();
+      eventModal.classList.add('hidden');
+      eventForm.reset();
+    }
+
+    initCalendar();
+  });
+</script>
+<style>
+  .content-wrapper {
+    overflow-y: auto;
+  }
+</style>
+
+</body>
+</html>

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intern2Founder - Cari Magang</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.6s ease-in-out forwards;
+            animation-delay: calc(var(--animation-order, 0) * 0.1s);
+        }
+        </style>
+</head>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                animation: {
+                    fadeIn: 'fadeIn 1s ease-in',
+                    slideInLeft: 'slideInLeft 1s ease-out',
+                    slideInRight: 'slideInRight 1s ease-out',
+                    bounceLight: 'bounceLight 2s infinite',
+                },
+                keyframes: {
+                    fadeIn: {
+                        '0%': { opacity: '0' },
+                        '100%': { opacity: '1' },
+                    },
+                    slideInLeft: {
+                        '0%': { transform: 'translateX(-100%)', opacity: '0' },
+                        '100%': { transform: 'translateX(0)', opacity: '1' },
+                    },
+                    slideInRight: {
+                        '0%': { transform: 'translateX(100%)', opacity: '0' },
+                        '100%': { transform: 'translateX(0)', opacity: '1' },
+                    },
+                    bounceLight: {
+                        '0%, 100%': { transform: 'translateY(-5%)' },
+                        '50%': { transform: 'translateY(0)' },
+                    },
+                },
+            }
+        }
+    }
+</script>
+<body class="font-sans bg-gray-50">
+    <!-- Navbar -->
+
+    <nav class="bg-white py-4 px-6 flex justify-between items-center shadow-sm fixed top-0 left-0 w-full z-50 animate-fadeIn">
+        <div class="flex items-center">
+            <a href="#" class="text-blue-600 font-bold text-xl">Intern2Founder</a>
+        </div>
+        <div class="hidden md:flex space-x-6">
+            <a href="#" class="text-gray-600 hover:text-blue-600">Home</a>
+            <a href="#" class="text-gray-600 hover:text-blue-600">Cari Magang</a>
+            <a href="#" class="text-gray-600 hover:text-blue-600">Posting Job</a>
+            <a href="#" class="text-gray-600 hover:text-blue-600">Resources</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="SIgnIn.html" class="text-blue-600 hover:text-blue-800">Sign In</a>
+            <a href="SignUp.html" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700">Sign Up</a>
+        </div>
+    </nav>
+
+    <!-- Page 1: Dark Blue Background -->
+    <section class="relative w-full h-[818px] bg-[#3674B5] mt-20">
+        <img src="img/pngwing.com (8).png" class="absolute w-[1042px] h-[817px] left-2.5 top-0 opacity-30" alt="Background Image" />
+        <div class="absolute left-[1004px] top-[82.35px] w-[329px] h-[735.41px]">
+            <div class="absolute w-full h-[573.27px] top-[162.14px] bg-[#578FCA]"></div>
+            <div class="absolute top-0 w-full h-[325.43px] bg-[#578FCA] rounded-full"></div>
+        </div>
+        <!-- Updated Text Section -->
+        <div class="absolute left-24 top-36 text-white text-7xl font-bold font-inter leading-snug animate-slideInLeft">
+            Mulai Karier
+        </div>
+       <div class="absolute left-24 top-[250px] text-white text-7xl font-bold font-inter leading-snug animate-slideInLeft delay-200">
+    Entrepreneur-mu dari
+</div>
+<div class="absolute left-24 top-[350px] text-white text-7xl font-bold font-inter leading-snug animate-slideInLeft delay-300">
+    Sini
+</div>
+        <!-- Button Section -->
+        <div class="absolute left-24 top-[500px] w-[229px] h-[58px] bg-[#15589F] rounded-lg overflow-hidden border border-transparent text-center flex items-center justify-center">
+            <button class="text-white font-semibold hover:bg-blue-500 hover:text-white py-3 px-6 rounded">
+                Cari tempat Magangmu
+            </button>
+        </div>
+        <img src="img/51461769517902929f28103cde97743f-removebg-preview.png" class="absolute w-[1113px] h-[773px] left-[601px] top-11 rounded-[34px]" alt="Image showing a person" />
+    </section>
+
+    <!-- page 2 -->
+    <section class="min-h-screen bg-blue-200 flex flex-col items-center justify-start pt-10">
+        <h1 class="text-gray-700 text-3xl font-bold mb-10">Jelajahi Tempat <span class="text-blue-800">Magang</span></h1>
+        <!-- Search Section -->
+        <div class="flex w-96 rounded-lg border border-gray-300 bg-white shadow-sm">
+            <input type="search" name="search" id="search" placeholder="Search" class="w-full rounded-l-lg px-4 py-2 text-gray-900 outline-none focus:ring-2 focus:ring-teal-500">
+            <button class="rounded-r-lg bg-blue-500 px-6 py-2 text-white font-medium hover:bg-teal-700 focus:ring-2 focus:ring-teal-500">
+                Search
+            </button>
+        </div>
+        
+                            <!-- kotak Section -->
+                <div class="flex justify-center grid grid-cols-3 grid-rows-2 gap-10 mt-10">
+                    <!-- Kotak 1 -->
+                    <a href="detail-reactjs.html" class="bg-white p-4 rounded-lg shadow-md w-auto h-auto flex flex-col transform transition-all duration-300 hover:scale-105 animate-fadeIn cursor-pointer no-underline text-black">
+                        <div class="flex items-start">
+                            <img src="img/github-brands.svg" class="h-10 mr-4 self-center -mt-14" alt="Logo">
+                            <div>
+                                <h1 class="text-lg">ReactJS Developer</h1>
+                                <p>Denpasarsoft</p>
+                                <div class="text-xs text-gray-500 flex items-start">
+                                    <div class="flex flex-col mr-2">
+                                        <img src="img/location.png" class="h-4 w-4 mb-1" alt="Location">
+                                        <img src="img/graduation.png" class="h-4 w-4 mb-1" alt="Graduation">
+                                        <img src="img/briefcase.png" class="h-4 w-4 mb-1" alt="Briefcase">
+                                        <img src="img/time-left.png" class="h-4 w-4 mb-1" alt="Time Left">
+                                    </div>
+                                    <div>
+                                        <p>Bali, Denpasar</p>
+                                        <p class="mt-1">Minimal SMK/SMA</p>
+                                        <p class="mt-2">On-site</p>
+                                        <p class="mt-1">6 - 10 Bulan</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <!-- Kotak 2 -->
+                    <a href="detail-python.html" class="bg-white p-4 rounded-lg shadow-md w-auto h-auto flex flex-col transform transition-all duration-300 hover:scale-105 animate-fadeIn cursor-pointer no-underline text-black">
+                        <div class="flex items-start">
+                            <img src="img/coding.png" class="h-10 mr-4 self-center -mt-14" alt="Logo">
+                            <div>
+                                <h1 class="text-lg">Python Developer</h1>
+                                <p>PT. Mangga Biru</p>
+                                <div class="text-xs text-gray-500 flex items-start">
+                                    <div class="flex flex-col mr-2">
+                                        <img src="img/location.png" class="h-4 w-4 mb-1" alt="Location">
+                                        <img src="img/graduation.png" class="h-4 w-4 mb-1" alt="Graduation">
+                                        <img src="img/briefcase.png" class="h-4 w-4 mb-1" alt="Briefcase">
+                                        <img src="img/time-left.png" class="h-4 w-4 mb-1" alt="Time Left">
+                                    </div>
+                                    <div>
+                                        <p>Bali, Denpasar</p>
+                                        <p class="mt-1">Minimal SMK/SMA</p>
+                                        <p class="mt-2">On-site</p>
+                                        <p class="mt-1">6 - 10 Bulan</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <!-- Kotak 3 -->
+                    <a href="detail-csharp.html" class="bg-white p-4 rounded-lg shadow-md w-auto h-auto flex flex-col transform transition-all duration-300 hover:scale-105 animate-fadeIn cursor-pointer no-underline text-black">
+                        <div class="flex items-start">
+                            <img src="img/css.png" class="h-10 mr-4 self-center -mt-14" alt="Logo">
+                            <div>
+                                <h1 class="text-lg">C# Developer</h1>
+                                <p>Bayam Production</p>
+                                <div class="text-xs text-gray-500 flex items-start">
+                                    <div class="flex flex-col mr-2">
+                                        <img src="img/location.png" class="h-4 w-4 mb-1" alt="Location">
+                                        <img src="img/graduation.png" class="h-4 w-4 mb-1" alt="Graduation">
+                                        <img src="img/briefcase.png" class="h-4 w-4 mb-1" alt="Briefcase">
+                                        <img src="img/time-left.png" class="h-4 w-4 mb-1" alt="Time Left">
+                                    </div>
+                                    <div>
+                                        <p>Bali, Denpasar</p>
+                                        <p class="mt-1">Minimal SMK/SMA</p>
+                                        <p class="mt-2">WFH (Work From Home)</p>
+                                        <p class="mt-1">1 - 2 Tahun</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <!-- Kotak 4 -->
+                    <a href="detail-product-manager.html" class="bg-white p-4 rounded-lg shadow-md w-auto h-auto flex flex-col transform transition-all duration-300 hover:scale-105 animate-fadeIn cursor-pointer no-underline text-black">
+                        <div class="flex items-start">
+                            <img src="img/php.png" class="h-10 mr-4 self-center -mt-14" alt="Logo">
+                            <div>
+                                <h1 class="text-lg">Product Manager</h1>
+                                <p>Hotel Bonsai</p>
+                                <div class="text-xs text-gray-500 flex items-start">
+                                    <div class="flex flex-col mr-2">
+                                        <img src="img/location.png" class="h-4 w-4 mb-1" alt="Location">
+                                        <img src="img/graduation.png" class="h-4 w-4 mb-1" alt="Graduation">
+                                        <img src="img/briefcase.png" class="h-4 w-4 mb-1" alt="Briefcase">
+                                        <img src="img/time-left.png" class="h-4 w-4 mb-1" alt="Time Left">
+                                    </div>
+                                    <div>
+                                        <p>Bali, Denpasar</p>
+                                        <p class="mt-1">Minimal SMK/SMA</p>
+                                        <p class="mt-2">On-site</p>
+                                        <p class="mt-1">1 - 6 Bulan</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <!-- Kotak 5 -->
+                    <a href="detail-hr-manager.html" class="bg-white p-4 rounded-lg shadow-md w-auto h-auto flex flex-col transform transition-all duration-300 hover:scale-105 animate-fadeIn cursor-pointer no-underline text-black">
+                        <div class="flex items-start">
+                            <img src="img/mysql.png" class="h-10 mr-4 self-center -mt-14" alt="Logo">
+                            <div>
+                                <h1 class="text-lg">HR Manager</h1>
+                                <p>PT. Duta Baju</p>
+                                <div class="text-xs text-gray-500 flex items-start">
+                                    <div class="flex flex-col mr-2">
+                                        <img src="img/location.png" class="h-4 w-4 mb-1" alt="Location">
+                                        <img src="img/graduation.png" class="h-4 w-4 mb-1" alt="Graduation">
+                                        <img src="img/briefcase.png" class="h-4 w-4 mb-1" alt="Briefcase">
+                                        <img src="img/time-left.png" class="h-4 w-4 mb-1" alt="Time Left">
+                                    </div>
+                                    <div>
+                                        <p>Bali, Denpasar</p>
+                                        <p class="mt-1">Minimal SMK/SMA</p>
+                                        <p class="mt-2">On-site</p>
+                                        <p class="mt-1">3 - 10 Bulan</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <!-- Kotak 6 -->
+                    <a href="detail-hr-manager.html" class="bg-white p-4 rounded-lg shadow-md w-auto h-auto flex flex-col transform transition-all duration-300 hover:scale-105 animate-fadeIn cursor-pointer no-underline text-black">
+                        <div class="flex items-start">
+                            <img src="img/tailwind.png" class="h-10 mr-4 self-center -mt-14" alt="Logo">
+                            <div>
+                                <h1 class="text-lg">JS Developer</h1>
+                                <p>Rumah Software</p>
+                                <div class="text-xs text-gray-500 flex items-start">
+                                    <div class="flex flex-col mr-2">
+                                        <img src="img/location.png" class="h-4 w-4 mb-1" alt="Location">
+                                        <img src="img/graduation.png" class="h-4 w-4 mb-1" alt="Graduation">
+                                        <img src="img/briefcase.png" class="h-4 w-4 mb-1" alt="Briefcase">
+                                        <img src="img/time-left.png" class="h-4 w-4 mb-1" alt="Time Left">
+                                    </div>
+                                    <div>
+                                        <p>Bali, Denpasar</p>
+                                        <p class="mt-1">Minimal SMK/SMA</p>
+                                        <p class="mt-2">WFH (Work From Home)</p>
+                                        <p class="mt-1">6 - 10 Bulan</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+        </div>
+    </section>
+    <!-- Hero Section -->
+    <section class="py-16 px-6 text-center relative">
+        <h1 class="text-3xl md:text-4xl font-bold mb-2">Misi Kami Adalah</h1>
+        <h2 class="text-2xl md:text-3xl font-bold mb-4">Membantu Anda Dalam</h2>
+        <h2 class="text-2xl md:text-3xl font-bold mb-8">Mencari Magang</h2>
+        
+        <div class="max-w-4xl mx-auto bg-white rounded-lg overflow-hidden shadow-md">
+            <!-- Image container for hero image -->
+            <div class="w-full h-64 md:h-80 bg-gray-200 flex items-center justify-center">
+                <img src="img/brooke-cagle--uHVRvDr7pg-unsplash.jpg" alt="Hero Image" class="w-full h-full object-cover rounded-lg">
+                <!-- <span class="text-gray-500">Hero Image</span> -->
+            </div>
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+                <button class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 flex items-center">
+                    <span>Mulai Cari Magang</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- About Us Section -->
+    <section class="py-12 px-6">
+        <div class="max-w-6xl mx-auto bg-blue-100 rounded-lg overflow-hidden shadow-md">
+            <div class="p-8 md:p-12 flex flex-col md:flex-row">
+                <div class="md:w-2/3 pr-0 md:pr-8">
+                    <div class="text-sm text-blue-600 mb-2">Untuk Kamu Mahasiswa dan Pencari Kerja</div>
+                    <h2 class="text-2xl font-bold mb-4">Tentang Kami</h2>
+                    <p class="text-gray-700 mb-4">Lorem ipsum dolor amet consecteur adipiscing eilt. Amet soll utlabore vel eopsum captiatull utlnams utlamco. Alculi tempor nst consectetur loream utsper utalcore utln ealm commodol. Thelorem utlpsum anim ut veritatil.</p>
+                    <button class="bg-white text-blue-600 px-4 py-2 rounded-md hover:bg-gray-100">Lebih Lanjut</button>
+                </div>
+                <div class="md:w-1/3 mt-6 md:mt-0">
+                    <div class="bg-white p-4 rounded-md">
+                        <h3 class="text-center mb-4">Intern2Founder.com</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center px-4 py-2 bg-blue-50 rounded-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm5 7a1 1 0 11-2 0 1 1 0 012 0zm4 0a1 1 0 11-2 0 1 1 0 012 0zm-8 2a1 1 0 100 2h8a1 1 0 100-2H5z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Connect</span>
+                            </div>
+                            <div class="flex items-center px-4 py-2 bg-pink-50 rounded-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M7 2a1 1 0 00-.707 1.707L7.586 5H4a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1V6a1 1 0 00-1-1h-3.586l1.293-1.293A1 1 0 0012 2H7zm3 4a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 9.586V6z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Sharing</span>
+                            </div>
+                            <div class="flex items-center px-4 py-2 bg-green-50 rounded-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5z" />
+                                    <path d="M7 8H5v2h2V8z" />
+                                    <path d="M9 8h6v2H9V8z" />
+                                </svg>
+                                <span>Send</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Image container for about section -->
+                    <div class="w-full h-40 bg-gray-200 mt-4 rounded-md flex items-center justify-center">
+                         <img src="img/jason-goodman-Oalh2MojUuk-unsplash.jpg" alt="Profesional" class="w-full h-full object-cover rounded-md">
+                        <!-- <span class="text-gray-500">About Image</span> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission and Vision Section -->
+    <section class="py-12 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center mb-16">
+                <div class="md:w-1/2 md:pr-8 mb-6 md:mb-0">
+                    <h2 class="text-purple-600 text-2xl font-bold mb-4">Misi Kami</h2>
+                    <p class="text-gray-700">Ut non dolor enim cupidatat sunt pariatur labore ex excepteur labore laboris ut. Lorem. Dolor non proident amet in exercitation aute anim reprehende.</p>
+                </div>
+                <div class="md:w-1/2">
+                    <!-- Image container for mission -->
+                    <div class="w-full h-48 bg-gray-200 rounded-lg shadow-md flex items-center justify-center">
+                        <img src="img/hannah-busing-Zyx1bK9mqmA-unsplash.jpg" alt="Tim bekerja bersama" class="w-full h-full object-cover rounded-lg">
+                        <!-- <span class="text-gray-500">Mission Image</span> -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row-reverse items-center">
+                <div class="md:w-1/2 md:pl-8 mb-6 md:mb-0">
+                    <h2 class="text-purple-600 text-2xl font-bold mb-4">Visi Kami</h2>
+                    <p class="text-gray-700">Ut non dolor enim cupidatat sunt pariatur labore ex excepteur labore laboris ut. Lorem. Dolor non proident amet in exercitation aute anim reprehende.</p>
+                </div>
+                <div class="md:w-1/2">
+                    <!-- Image container for vision -->
+                    <div class="w-full h-48 bg-gray-200 rounded-lg shadow-md flex items-center justify-center">
+                        <img src="img/hannah-busing-Zyx1bK9mqmA-unsplash.jpg" alt="Tim diskusi" class="w-full h-full object-cover rounded-lg">
+                        <!-- <span class="text-gray-500">Vision Image</span> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Goals Section -->
+    <section class="py-12 px-6 relative">
+        <div class="max-w-4xl mx-auto text-center mb-12">
+            <h2 class="text-3xl font-bold">Tujuan Kami</h2>
+        </div>
+        
+        <!-- Number Steps with decoration -->
+        <div class="max-w-4xl mx-auto relative">
+            <!-- Decorative line -->
+            <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-blue-100 hidden md:block"></div>
+            
+            <div class="space-y-16">
+                <!-- Step 1 -->
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 bg-white w-16 h-16 rounded-full flex items-center justify-center border-2 border-blue-200 z-10">
+                        <span class="text-2xl font-bold text-blue-600">1</span>
+                    </div>
+                    <div class="ml-6">
+                        <p class="text-gray-700">Ut non dolor enim cupidatat sunt pariatur labore ex excepteur labore laboris ut. Lorem. Dolor non proident amet in exercitation aute anim reprehende.</p>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 bg-white w-16 h-16 rounded-full flex items-center justify-center border-2 border-blue-200 z-10">
+                        <span class="text-2xl font-bold text-blue-600">2</span>
+                    </div>
+                    <div class="ml-6">
+                        <p class="text-gray-700">Ut non dolor enim cupidatat sunt pariatur labore ex excepteur labore laboris ut. Lorem. Dolor non proident amet in exercitation aute anim reprehende.</p>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 bg-white w-16 h-16 rounded-full flex items-center justify-center border-2 border-blue-200 z-10">
+                        <span class="text-2xl font-bold text-blue-600">3</span>
+                    </div>
+                    <div class="ml-6">
+                        <p class="text-gray-700">Ut non dolor enim cupidatat sunt pariatur labore ex excepteur labore laboris ut. Lorem. Dolor non proident amet in exercitation aute anim reprehende.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Decorative circles -->
+            <div class="absolute right-0 top-1/4 w-32 h-32 rounded-full border-2 border-dashed border-blue-100 -z-10"></div>
+            <div class="absolute left-1/4 bottom-1/4 w-48 h-48 rounded-full border-2 border-dashed border-blue-100 -z-10"></div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+<section class="py-12 px-6 bg-blue-400 text-white">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+            <div class="text-sm mb-2">Bekerja bersama menemukan solusi terbaik</div>
+            <h2 class="text-3xl font-bold">Team Kami</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <!-- Team Member 1 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-xl animate-fadeIn">
+                <!-- Image container for team member -->
+                <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                    <img src="img/rafaella-mendes-diniz-et_78QkMMQs-unsplash.jpg" alt="Team Member" class="w-full h-full object-cover">
+                </div>
+                <div class="p-4 text-center text-gray-800">
+                    <h3 class="font-bold">Rafela</h3>
+                    <p class="text-sm text-gray-600">Manager</p>
+                </div>
+            </div>
+            
+            <!-- Team Member 2 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-xl animate-fadeIn">
+                <!-- Image container for team member -->
+                <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                    <img src="img/joseph-gonzalez-iFgRcqHznqg-unsplash.jpg" alt="Team Member" class="w-full h-full object-cover"> 
+                </div>
+                <div class="p-4 text-center text-gray-800">
+                    <h3 class="font-bold">Joseph Gonzalez</h3>
+                    <p class="text-sm text-gray-600">Owner</p>
+                </div>
+            </div>
+            
+            <!-- Team Member 3 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-xl animate-fadeIn">
+                <!-- Image container for team member -->
+                <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                    <img src="img/ian-dooley-d1UPkiFd04A-unsplash.jpg" alt="Team Member" class="w-full h-full object-cover">
+                </div>
+                <div class="p-4 text-center text-gray-800">
+                    <h3 class="font-bold">Ian Dooley</h3>
+                    <p class="text-sm text-gray-600">IT Manager</p>
+                </div>
+            </div>
+            
+            <!-- Team Member 4 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-xl animate-fadeIn">
+                <!-- Image container for team member -->
+                <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                    <img src="img/aiony-haust-3TLl_97HNJo-unsplash.jpg" alt="Team Member" class="w-full h-full object-cover"> 
+                </div>
+                <div class="p-4 text-center text-gray-800">
+                    <h3 class="font-bold">Aiony Haust</h3>
+                    <p class="text-sm text-gray-600">Accountant</p>
+                </div>
+            </div>
+            
+            <!-- Team Member 5 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-xl animate-fadeIn">
+                <!-- Image container for team member -->
+                <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                    <img src="img/michael-dam-mEZ3PoFGs_k-unsplash.jpg" alt="Team Member" class="w-full h-full object-cover">
+                </div>
+                <div class="p-4 text-center text-gray-800">
+                    <h3 class="font-bold">Michael</h3>
+                    <p class="text-sm text-gray-600">Social Relation</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pagination Dots -->
+        <div class="flex justify-center mt-8">
+            <span class="w-3 h-3 mx-1 rounded-full bg-white"></span>
+            <span class="w-3 h-3 mx-1 rounded-full bg-white opacity-50"></span>
+            <span class="w-3 h-3 mx-1 rounded-full bg-white opacity-50"></span>
+        </div>
+    </div>
+</section>
+
+    <!-- Call to Action -->
+    <section class="py-12 px-6">
+        <div class="max-w-4xl mx-auto bg-blue-500 rounded-lg text-center p-8 text-white">
+            <h2 class="text-2xl font-bold mb-6">Mari Mulai</h2>
+            <button class="bg-white text-blue-600 px-6 py-3 rounded-full hover:bg-gray-100 mb-6">Sign Up</button>
+            <!-- Small decorative image container -->
+            
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-6 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-wrap justify-center gap-6 mb-6 text-sm">
+                <a href="#" class="text-gray-600 hover:text-blue-600">Subscribe</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600">Join the community</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600">Documentation</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600">How it works</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600">Subscribe</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600">Join the community</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600">Documentation</a>
+            </div>
+            
+            <div class="bg-blue-500 text-white p-6 rounded-lg">
+                <div class="flex flex-col md:flex-row justify-between mb-6">
+                    <div class="mb-6 md:mb-0">
+                        <a href="#" class="font-bold text-xl">Logo</a>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div>
+                            <h3 class="text-sm font-bold mb-2">Product</h3>
+                            <ul class="text-xs space-y-1">
+                                <li><a href="#" class="hover:underline">Features</a></li>
+                                <li><a href="#" class="hover:underline">Pricing</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold mb-2">Resources</h3>
+                            <ul class="text-xs space-y-1">
+                                <li><a href="#" class="hover:underline">Blog</a></li>
+                                <li><a href="#" class="hover:underline">User guides</a></li>
+                                <li><a href="#" class="hover:underline">Webinars</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold mb-2">Company</h3>
+                            <ul class="text-xs space-y-1">
+                                <li><a href="#" class="hover:underline">About</a></li>
+                                <li><a href="#" class="hover:underline">Join us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-4 mb-6">
+                    <a href="#" class="w-8 h-8 rounded bg-white flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="w-8 h-8 rounded bg-white flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-2.719 0-4.924 2.205-4.924 4.924 0 .386.044.762.127 1.122-4.092-.205-7.719-2.165-10.148-5.144-.424.729-.667 1.574-.667 2.479 0 1.707.867 3.214 2.19 4.097-.807-.025-1.566-.247-2.23-.616v.062c0 2.387 1.697 4.378 3.95 4.828-.413.112-.85.172-1.297.172-.318 0-.626-.031-.926-.088.626 1.956 2.444 3.38 4.6 3.42-1.686 1.32-3.809 2.107-6.117 2.107-.398 0-.79-.023-1.175-.068 2.179 1.397 4.767 2.212 7.548 2.212 9.057 0 14.01-7.503 14.01-14.01 0-.213-.005-.426-.015-.637.961-.689 1.797-1.549 2.457-2.529z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="w-8 h-8 rounded bg-white flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 16h-2v-6h2v6zm-1-6.891c-.607 0-1.1-.496-1.1-1.109 0-.612.492-1.109 1.1-1.109s1.1.497 1.1 1.109c0 .613-.493 1.109-1.1 1.109zm8 6.891h-1.998v-2.861c0-1.881-2.002-1.722-2.002 0v2.861h-2v-6h2v1.093c.872-1.616 4-1.736 4 1.548v3.359z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="w-8 h-8 rounded bg-white flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+                </div>
+                
+                <div class="text-xs">
+                    <p class="mb-2">Dilindungi oleh hukum.</p>
+                    <p>© 2023 Company Name. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+<script>
+    // Simple intersection observer for scroll animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-fadeIn');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    // Observe all sections
+    document.querySelectorAll('section').forEach((section) => {
+        observer.observe(section);
+    });
+</script>
+</html>

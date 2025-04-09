@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Profile - Intern2Founder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .floating-element {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, #6366f1, #3b82f6, #10b981);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 5s ease infinite;
+        }
+
+        .skill-tag.selected {
+            background: linear-gradient(45deg, #6366f1, #3b82f6);
+            color: white;
+        }
+    </style>
+</head>
+<body 
+    x-data="{ 
+        step: 1,
+        skills: [
+            'Frontend Development', 'Backend Development', 'UI/UX Design', 
+            'Mobile Development', 'Data Science', 'Machine Learning',
+            'Cloud Computing', 'DevOps', 'Cybersecurity',
+            'Blockchain', 'Digital Marketing', 'Project Management'
+        ],
+        selectedSkills: [],
+        universities: ['University of Indonesia', 'Bandung Institute of Technology', 'Gadjah Mada University'],
+        educationHistory: [
+            { university: '', major: '', startYear: '', endYear: '', gpa: '' }
+        ],
+        addEducation() {
+            this.educationHistory.push({ 
+                university: '', 
+                major: '', 
+                startYear: '', 
+                endYear: '', 
+                gpa: '' 
+            });
+        },
+        removeEducation(index) {
+            this.educationHistory.splice(index, 1);
+        },
+        toggleSkill(skill) {
+            const index = this.selectedSkills.indexOf(skill);
+            if (index === -1) {
+                if (this.selectedSkills.length < 5) {
+                    this.selectedSkills.push(skill);
+                }
+            } else {
+                this.selectedSkills.splice(index, 1);
+            }
+        }
+    }" 
+    class="bg-gray-50 min-h-screen py-12"
+>
+    <div class="container mx-auto px-4 max-w-4xl">
+        <!-- Header with Google Account Info -->
+        <div class="bg-white rounded-xl p-6 mb-8 shadow-lg flex items-center">
+            <img src="https://lh3.googleusercontent.com/a/default-user" class="w-16 h-16 rounded-full mr-6" alt="Profile Picture">
+            <div>
+                <p class="text-sm text-gray-600">Signed in with Google as</p>
+                <h2 class="text-xl font-semibold text-gray-800">student@gmail.com</h2>
+            </div>
+        </div>
+
+        <!-- Main Form Container -->
+        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+            <!-- Progress Bar -->
+            <div class="bg-gray-100 h-2">
+                <div 
+                    class="h-full bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-500"
+                    :style="`width: ${(step/3)*100}%`"
+                ></div>
+            </div>
+
+            <div class="p-8">
+                <!-- Step 1: Personal Information -->
+                <div x-show="step === 1">
+                    <h2 class="text-2xl font-bold mb-6 gradient-text">Personal Information</h2>
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-gray-700 mb-2">Full Name</label>
+                                <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2">Phone Number</label>
+                                <input type="tel" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Bio</label>
+                            <textarea rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Education History -->
+                <div x-show="step === 2">
+                    <h2 class="text-2xl font-bold mb-6 gradient-text">Education History</h2>
+                    <div class="space-y-6">
+                        <template x-for="(edu, index) in educationHistory" :key="index">
+                            <div class="p-6 border border-gray-200 rounded-lg">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-gray-700 mb-2">University</label>
+                                        <select x-model="edu.university" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                            <option value="">Select University</option>
+                                            <template x-for="uni in universities" :key="uni">
+                                                <option x-text="uni"></option>
+                                            </template>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 mb-2">Major</label>
+                                        <input type="text" x-model="edu.major" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 mb-2">Start Year</label>
+                                        <input type="number" x-model="edu.startYear" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 mb-2">End Year</label>
+                                        <input type="number" x-model="edu.endYear" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 mb-2">GPA</label>
+                                        <input type="number" step="0.01" x-model="edu.gpa" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                </div>
+                                <button 
+                                    @click="removeEducation(index)"
+                                    class="mt-4 text-red-500 hover:text-red-700"
+                                    x-show="educationHistory.length > 1"
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        </template>
+                        <button 
+                            @click="addEducation"
+                            class="text-blue-500 hover:text-blue-700 font-semibold"
+                        >
+                            + Add Another Education
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Skills -->
+                <div x-show="step === 3">
+                    <h2 class="text-2xl font-bold mb-6 gradient-text">Select Your Skills</h2>
+                    <p class="text-gray-600 mb-4">Choose up to 5 skills that best describe your expertise</p>
+                    <div class="flex flex-wrap gap-3">
+                        <template x-for="skill in skills" :key="skill">
+                            <button 
+                                @click="toggleSkill(skill)"
+                                class="skill-tag px-4 py-2 rounded-full border transition-all duration-300"
+                                :class="selectedSkills.includes(skill) ? 'selected' : 'border-gray-300 hover:border-blue-500'"
+                                x-text="skill"
+                            ></button>
+                        </template>
+                    </div>
+                    <div class="mt-6">
+                        <p class="text-gray-600">Selected Skills: <span x-text="selectedSkills.length"></span>/5</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="mt-8 flex justify-between">
+                    <button 
+                        x-show="step > 1"
+                        @click="step--"
+                        class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+                    >
+                        Previous
+                    </button>
+                    <button 
+                        x-show="step < 3"
+                        @click="step++"
+                        class="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:opacity-90 transition"
+                    >
+                        Next
+                    </button>
+                    <button onclick="window.location.href='Profile.html';"
+                        x-show="step === 3"
+                        class="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:opacity-90 transition"
+                    >
+                        Complete Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

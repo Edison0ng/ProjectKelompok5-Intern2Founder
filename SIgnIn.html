@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intern2Founder - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        /* Custom smooth animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .floating-element {
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .input-glow:focus {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+            border-color: rgb(59, 130, 246);
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, #6366f1, #3b82f6, #10b981);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 5s ease infinite;
+        }
+
+        .button-pulse {
+            transition: all 0.3s ease;
+        }
+
+        .button-pulse:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.06);
+        }
+
+        .social-hover {
+            transition: all 0.3s ease;
+        }
+
+        .social-hover:hover {
+            transform: translateY(-5px) rotate(5deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen" x-data="{ showPassword: false }">
+    <div class="container mx-auto px-4 max-w-6xl">
+        <div class="bg-white shadow-2xl rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-2 transform transition-all duration-500 hover:scale-[1.01]">
+            <!-- Left Side - Login Form -->
+            <div class="p-12 relative bg-white z-10 overflow-hidden">
+                <!-- Floating decorative elements -->
+                <div class="absolute -top-16 -left-16 w-64 h-64 bg-purple-100 rounded-full floating-element opacity-50 z-0"></div>
+                <div class="absolute -bottom-16 -right-16 w-64 h-64 bg-blue-100 rounded-full floating-element opacity-50 z-0"></div>
+                
+                <div class="relative z-20">
+                    <div class="flex items-center mb-8">
+                        <div class="h-12 w-12 mr-3 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold gradient-text">
+                            I2F
+                        </div>
+                        <h1 class="text-3xl font-bold text-gray-800 gradient-text">Intern2Founder</h1>
+                    </div>
+
+                    <h2 class="text-2xl font-semibold mb-6 text-gray-700">Login To Your Account</h2>
+
+                    <div class="space-y-4 mb-6">
+                        <div>
+                            <label class="block text-gray-700 mb-2">Email</label>
+                            <input 
+                                type="email" 
+                                placeholder="example email@gmail.com" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none input-glow transition duration-300"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Password</label>
+                            <div class="relative">
+                                <input 
+                                    :type="showPassword ? 'text' : 'password'" 
+                                    placeholder="Enter at least 8+ characters" 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none input-glow transition duration-300"
+                                >
+                                <button 
+                                    @click="showPassword = !showPassword"
+                                    class="absolute right-3 top-3 text-gray-500 hover:text-blue-500 transition"
+                                >
+                                    <svg x-show="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <svg x-show="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-14-14zM13.457 4.457a1 1 0 00-1.414-1.414 7.963 7.963 0 00-2.043 2.689L6.586 8.464a4 4 0 005.906 5.322l3.708 3.707a1 1 0 001.414-1.414l-3.707-3.708a4 4 0 00-.464-5.252zM7.025 7.025a4 4 0 00-.325 4.857L3.318 15.39a1 1 0 101.414 1.414l3.408-3.408A4 4 0 0014 10c0-1.25-.7-2.567-1.854-3.715a1 1 0 00-1.414 1.414C11.579 8.411 12 9.25 12 10a2 2 0 01-3.146 1.646 1 1 0 00-1.828-.82z" clip-rule="evenodd"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center">
+                            <input type="checkbox" class="mr-2 rounded text-blue-600 focus:ring-blue-500">
+                            <span class="text-gray-700">Remember me</span>
+                        </div>
+                        <a href="#" class="text-blue-600 hover:underline transition">Forgot Password?</a>
+                    </div>
+
+                    <div class="space-y-4">
+                        <button onclick="window.location.href='HomePage.html';"class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg button-pulse hover:from-blue-600 hover:to-purple-700 transition duration-300 transform">
+                            Sign in
+                        </button>
+
+                        <div class="text-center text-gray-600 my-4">Or sign in using</div>
+
+                        <div class="flex justify-center space-x-4">
+                            <button class="p-3 bg-red-500 text-white rounded-full social-hover hover:bg-red-600 transition flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.283 10.356h-8.327v3.47h4.792c-.426 2.668-2.36 3.47-4.792 3.47a5.28 5.28 0 01-5.279-5.279c0-2.923 2.356-5.279 5.279-5.279 1.259 0 2.399.447 3.298 1.184l2.6-2.6c-1.66-1.424-3.779-2.284-5.898-2.284A8.279 8.279 0 003.436 12.14c0 4.58 3.718 8.279 8.279 8.279 4.457 0 7.676-3.46 7.676-8.279 0-.708-.093-1.26-.262-1.784z"/>
+                                </svg>
+                            </button>
+                            <button class="p-3 bg-blue-600 text-white rounded-full social-hover hover:bg-blue-700 transition flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
+                                </svg>
+                            </button>
+                            <button class="p-3 bg-blue-400 text-white rounded-full social-hover hover:bg-blue-500 transition flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 01-1.93.07 4.28 4.28 0 004 2.98 8.521 8.521 0 01-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side - New User Section -->
+            <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white p-12 flex items-center justify-center relative overflow-hidden">
+                <div class="absolute -top-16 -right-16 w-64 h-64 bg-blue-700 rounded-full opacity-20 floating-element z-0"></div>
+                <div class="absolute -bottom-16 -left-16 w-64 h-64 bg-purple-700 rounded-full opacity-20 floating-element z-0"></div>
+                
+                <div className="z-20 text-center">
+                    <h3 class="text-3xl font-bold mb-6 transform transition-all duration-500 hover:scale-105">New Here?</h3>
+                    <p class="mb-8 text-gray-200 leading-relaxed">
+                        Sign up to start your journey to earn a great chance to internship and learn about entrepreneur yourself
+                    </p>
+                    <button onclick="window.location.href='Signup.html';" class="bg-white text-blue-600 px-8 py-3 rounded-lg button-pulse hover:bg-gray-100 transition duration-300 transform">
+                        Sign up
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
