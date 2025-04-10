@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intern2Founder - Cari Magang</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-white py-4 px-6 flex justify-between items-center shadow-sm fixed top-0 left-0 w-full z-50">
+        <div class="flex items-center">
+            <a href="#" class="text-blue-600 font-bold text-xl">Intern2Founder</a>
+        </div>
+        <div class="hidden md:flex space-x-6">
+            <a href="#" class="text-gray-600 hover:text-blue-600">Home</a>
+            <a href="#cariMagang" class="text-gray-600 hover:text-blue-600">Cari Magang</a>
+            <a href="#" class="text-gray-600 hover:text-blue-600">Posting Job</a>
+            <a href="#" class="text-gray-600 hover:text-blue-600">Resources</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="SIgnIn.html" class="text-blue-600 hover:text-blue-800">Sign In</a>
+            <a href="SignUp.html" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700">Sign Up</a>
+        </div>
+    </nav>
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow px-4 py-6">
+          <div class="flex items-center gap-2 mb-6">
+            <img src="https://i.pravatar.cc/40" class="rounded-full w-10 h-10" />
+            <div>
+              <div class="text-sm font-semibold">Sarah</div>
+              <div class="text-xs text-gray-500">sarah@corp.com</div>
+            </div>
+          </div>
+          <nav class="space-y-3">
+            <a href="#" class="block px-3 py-2 rounded text-gray-700 hover:bg-gray-100">Home</a>
+            <a href="#" class="block px-3 py-2 rounded text-white bg-indigo-600">Jobs</a>
+            <a href="#" class="block px-3 py-2 rounded text-gray-700 hover:bg-gray-100">Candidates</a>
+            <a href="#" class="block px-3 py-2 rounded text-gray-700 hover:bg-gray-100">Calendar</a>
+            <a href="#" class="block px-3 py-2 rounded text-gray-700 hover:bg-gray-100">Reports</a>
+            <a href="#" class="block px-3 py-2 rounded text-gray-700 hover:bg-gray-100">Settings</a>
+          </nav>
+          <div class="absolute bottom-4 left-4 text-xs text-purple-500">TalentFlow</div>
+        </aside>
+  
+        <!-- Main -->
+        <main class="flex-1 p-8">
+          <!-- Header -->
+          <div class="flex justify-between items-center mb-6">
+            <div>
+              <h1 class="text-2xl font-bold">Jobs</h1>
+              <nav class="text-sm text-gray-500">Jobs</nav>
+            </div>
+            <div class="flex gap-2">
+              <input type="text" placeholder="Search" class="px-3 py-1.5 border rounded text-sm" />
+              <button class="px-3 py-1.5 border rounded text-sm">Filter</button>
+              <button class="px-4 py-2 bg-indigo-600 text-white text-sm rounded">+ Create new job</button>
+            </div>
+          </div>
+  
+          <!-- Stats -->
+          <div class="grid grid-cols-4 gap-4 mb-6">
+            <div class="p-4 bg-white shadow rounded">
+              <div class="text-sm text-gray-500">Open Positions</div>
+              <div class="text-xl font-semibold">10</div>
+            </div>
+            <div class="p-4 bg-white shadow rounded">
+              <div class="text-sm text-gray-500">Active Job Posts</div>
+              <div class="text-xl font-semibold">7</div>
+            </div>
+            <div class="p-4 bg-white shadow rounded">
+              <div class="text-sm text-gray-500">Pending Approval</div>
+              <div class="text-xl font-semibold">2</div>
+            </div>
+            <div class="p-4 bg-white shadow rounded">
+              <div class="text-sm text-gray-500">Expired Posts</div>
+              <div class="text-xl font-semibold">1</div>
+              <div class="text-xs text-gray-400">Closed last week</div>
+            </div>
+          </div>
+  
+          <!-- Filters -->
+          <div class="flex gap-4 mb-4">
+            <button class="text-indigo-600 font-semibold">All</button>
+            <button class="text-gray-600">Open</button>
+            <button class="text-gray-600">Pending Approval</button>
+            <button class="text-gray-600">Expired</button>
+          </div>
+  
+          <!-- Job Cards -->
+          <div class="space-y-4">
+            <!-- Reusable card start -->
+            <div class="bg-white p-4 shadow rounded flex gap-4 items-start">
+              <img src="https://source.unsplash.com/100x100/?tech" class="rounded w-24 h-24 object-cover" />
+              <div class="flex-1">
+                <div class="flex justify-between">
+                  <h2 class="text-lg font-bold">Software Engineer <span class="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded">Open</span></h2>
+                  <div class="flex gap-2 text-sm">
+                    <a href="#" class="text-indigo-600">Edit</a>
+                    <a href="#" class="text-indigo-600">View job post</a>
+                    <a href="#" class="text-white bg-indigo-600 px-2 py-1 rounded">View Candidates</a>
+                  </div>
+                </div>
+                <div class="grid grid-cols-6 gap-2 mt-2 text-center text-sm">
+                  <div>40<br /><span class="text-gray-500 text-xs">Applied</span></div>
+                  <div>35<br /><span class="text-gray-500 text-xs">Under Review</span></div>
+                  <div>5<br /><span class="text-gray-500 text-xs">Interviewed</span></div>
+                  <div>5<br /><span class="text-gray-500 text-xs">Offered</span></div>
+                  <div>4<br /><span class="text-gray-500 text-xs">Hired</span></div>
+                </div>
+              </div>
+            </div>
+            <!-- Repeat for other job posts -->
+          </div>
+        </main>
+      </div>
+</body>
+</html>
