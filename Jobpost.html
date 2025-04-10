@@ -39,6 +39,9 @@
               <input type="text" placeholder="Job Title" value="Product Designer" class="border p-2 rounded" />
               <select class="border p-2 rounded">
                 <option>New York, USA</option>
+                <option>Denpasar, Indonesia</option>
+                <option>Jakarta, Indonesia</option>
+
               </select>
     
               <div class="flex items-center space-x-4">
@@ -49,20 +52,27 @@
     
               <select class="border p-2 rounded">
                 <option>Product</option>
+                <option>Engineering</option>
+                <option>Design</option>
+                <option>Marketing</option>
               </select>
     
               <select class="border p-2 rounded">
                 <option>Full-Time</option>
+                <option>Part-Time</option>
               </select>
     
               <select class="border p-2 rounded">
                 <option>Senior-Level</option>
+                <option>Entry-Level</option>
+                <option>Mid-Level</option>
               </select>
     
               <div class="flex space-x-2 items-center">
                 <input type="text" placeholder="40,000 to 50,000" class="border p-2 rounded w-full" />
                 <select class="border p-2 rounded">
                   <option>USD</option>
+                  <option>IDR</option>
                 </select>
               </div>
             </div>
@@ -72,9 +82,6 @@
           <section class="bg-white p-6 rounded-xl shadow-md mb-6">
             <h2 class="text-xl font-semibold mb-4">Job Description</h2>
             <textarea class="border p-2 w-full rounded mb-4" rows="3">A Product Designer creates user-centered designs that improve the usability, functionality, and appeal of digital products</textarea>
-    
-            <textarea class="border p-2 w-full rounded mb-4" rows="3" placeholder="Key Responsibilities"></textarea>
-            <textarea class="border p-2 w-full rounded mb-4" rows="3" placeholder="Required Skills"></textarea>
     
             <label class="block">
               <input type="checkbox" class="mr-2" /> Preferred Skills
@@ -92,13 +99,14 @@
           <!-- Additional Info -->
           <section class="bg-white p-6 rounded-xl shadow-md mb-6">
             <h2 class="text-xl font-semibold">Additional Information</h2>
+            <textarea class="border p-2 w-full rounded mb-4" rows="3" placeholder="Key Responsibilities"></textarea>
+            <textarea class="border p-2 w-full rounded mb-4" rows="3" placeholder="Required Skills"></textarea>
             <!-- Expandable content could go here -->
           </section>
     
           <!-- Buttons -->
           <div class="flex justify-end space-x-4">
             <button class="px-4 py-2 rounded border border-gray-300 text-gray-700">Cancel</button>
-            <button class="px-4 py-2 rounded bg-gray-200 text-gray-700">Save Draft</button>
             <button class="px-4 py-2 rounded bg-indigo-600 text-white">Save and Publish</button>
           </div>
         </main>
